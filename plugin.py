@@ -340,7 +340,7 @@ class ToonApiLibPlugin:
                 if str_burner_state != self.prv_str_burner_state:
                     
                     if self.print_debug_log:
-                        Domoticz.Log("Update state: " + str_burner_state)
+                        Domoticz.Log("Update burner state: " + str_burner_state)
 
                     if str_burner_state == "on":
                         Devices[UNIT_HEATING_ACTIVE].Update(1, str(1))
