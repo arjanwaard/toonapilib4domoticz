@@ -329,9 +329,6 @@ class ToonApiLibPlugin:
     def _update_burner_state(self):
         try:
             str_burner_state = ""
-            hot_water_on = 0
-            heating_on = 0
-            preheating_on = 0
 
             try:
                 str_burner_state = self.my_toon.burner_state
@@ -339,22 +336,27 @@ class ToonApiLibPlugin:
                 Domoticz.Log("An error occurred updating burner state")
 
             if str_burner_state != "":
-
-                if str_burner_state == "on":
-                    heating_on = 1
-                elif str_burner_state == "water_heating":
-                    hot_water_on = 1
-                elif str_burner_state == "pre_heating":
-                    preheating_on = 1
-
+                
                 if str_burner_state != self.prv_str_burner_state:
+                    
                     if self.print_debug_log:
                         Domoticz.Log("Update state: " + str_burner_state)
-                    Devices[UNIT_HEATING_ACTIVE].Update(heating_on, str(heating_on))
-                    Devices[UNIT_HOT_WATER_ACTIVE].Update(hot_water_on, str(hot_water_on))
-                    Devices[UNIT_PREHEAT_ACTIVE].Update(preheating_on, str(preheating_on))
 
-                self.prv_str_burner_state = str_burner_state
+                    if str_burner_state == "on":
+                        Devices[UNIT_HEATING_ACTIVE].Update(1, str(1))
+                    elif str_burner_state == "water_heating":
+                        Devices[UNIT_HOT_WATER_ACTIVE].Update(1, str(1))
+                    elif str_burner_state == "pre_heating":
+                        Devices[UNIT_PREHEAT_ACTIVE].Update(1, str(1))
+                    
+                    if self.prv_str_burner_state == "on":
+                        Devices[UNIT_HEATING_ACTIVE].Update(0, str(0))
+                    elif self.prv_str_burner_state == "water_heating":
+                        Devices[UNIT_HOT_WATER_ACTIVE].Update(0, str(0))
+                    elif self.prv_str_burner_state == "pre_heating":
+                        Devices[UNIT_PREHEAT_ACTIVE].Update(0, str(0))
+                
+                    self.prv_str_burner_state = str_burner_state
         except:
             Domoticz.Log("An error occurred updating burner state")
 
